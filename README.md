@@ -1,4 +1,4 @@
-## Messaging Progressibe Web Application Frontend
+## Messaging Progressive Web Application Frontend
 ## Available Scripts
 
 In the project directory, you can run:
