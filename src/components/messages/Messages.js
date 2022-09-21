@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Skeleton from "react-loading-skeleton";
@@ -69,13 +70,21 @@ const Messages = () => {
             key={message.id}
             onClick={() => handleClickOpen(message.id)}
             style={{ cursor: "pointer" }}
+            className="message-list"
           >
-            <Stack direction="row" alignItems="center" gap={1}>
-              <StarBorderIcon color="action" />
-              <span>Message ID : {message.id}</span>
-              <span>Message : {message.message}</span>
-            </Stack>
-            <hr />
+            <Card variant="outlined">
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap={1}
+                style={{ fontWeight: message.read ? "" : "bold" }}
+              >
+                <StarBorderIcon color="action" />
+                <span>Message ID : {message.id}</span>
+                <span>Message : {message.message}</span>
+              </Stack>
+              <br />
+            </Card>
           </div>
         ))
       )}
