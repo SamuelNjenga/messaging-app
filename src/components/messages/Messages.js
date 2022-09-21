@@ -11,8 +11,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Stack from "@mui/material/Stack";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Skeleton from "react-loading-skeleton";
+import moment from "moment";
 
 import "react-loading-skeleton/dist/skeleton.css";
+import "./Messages.scss";
 
 const Messages = () => {
   const [open, setOpen] = useState(false);
@@ -40,7 +42,12 @@ const Messages = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"The message"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <span class="message-header">{"The message"}</span>{" "}
+          <span class="message-time">
+            {moment(message.createdAt).format("lll")}
+          </span>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {message.message} {message.id}
