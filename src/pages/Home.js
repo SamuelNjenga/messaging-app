@@ -23,7 +23,7 @@ const Home = (props) => {
           color="secondary"
           style={{ marginLeft: "100px" }}
         >
-          Messages <MailIcon color="action" />
+          New Messages <MailIcon color="action" />
         </Badge>
       </Link>
     </div>

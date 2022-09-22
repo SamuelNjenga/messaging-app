@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { useMessages } from "../../context/MessageContext";
-
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -14,6 +12,9 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
 
+import { convertToRead } from "../../services/APIUtils";
+import { useMessages } from "../../context/MessageContext";
+
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Messages.scss";
 
@@ -22,7 +23,12 @@ const Messages = () => {
   const [messageId, setMessageId] = useState(null);
   const [message, setMessage] = useState({});
 
-  const { allMessages, allMessagesLoading } = useMessages();
+  const {
+    allMessages,
+    allMessagesLoading,
+    setAllMessages,
+    setUnreadMessages,
+  } = useMessages();
 
   const handleClickOpen = (msgId) => {
     setMessageId(msgId);
@@ -31,7 +37,17 @@ const Messages = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = async (msgId, actorId) => {
+    try {
+      const res = await convertToRead({
+        messageId: msgId,
+        actorId: actorId,
+      });
+      setAllMessages(res.data.allMessages);
+      setUnreadMessages(res.data.unreadMessages);
+    } catch (err) {
+      console.log(err);
+    }
     setOpen(false);
   };
 
@@ -55,8 +71,13 @@ const Messages = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={() => handleClose(message.id, message.actorId)}>
+            Close
+          </Button>
+          <Button
+            onClick={() => handleClose(message.id, message.actorId)}
+            autoFocus
+          >
             Okay
           </Button>
         </DialogActions>
