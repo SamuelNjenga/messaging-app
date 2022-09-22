@@ -9,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
 
@@ -71,12 +72,17 @@ const Messages = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose(message.id, message.actorId)}>
+          <Button
+            onClick={() => handleClose(message.id, message.actorId)}
+            variant="outlined"
+            color="secondary"
+          >
             Close
           </Button>
           <Button
             onClick={() => handleClose(message.id, message.actorId)}
-            autoFocus
+            variant="contained"
+            color="success"
           >
             Okay
           </Button>
@@ -109,6 +115,11 @@ const Messages = () => {
           </div>
         ))
       )}
+      <Link to="/">
+        <Button variant="contained" color="success">
+          BACK
+        </Button>
+      </Link>
     </div>
   );
 };
