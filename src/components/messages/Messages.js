@@ -8,12 +8,14 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
 
-import { convertToRead } from "../../services/APIUtils";
+import { convertToRead, deleteMessage } from "../../services/APIUtils";
 import { useMessages } from "../../context/MessageContext";
 
 import "react-loading-skeleton/dist/skeleton.css";
@@ -50,6 +52,20 @@ const Messages = () => {
       console.log(err);
     }
     setOpen(false);
+  };
+
+  const handleMessageDelete = async (msgId, actorId) => {
+    try {
+      const res = await deleteMessage({
+        messageId: msgId,
+        actorId: actorId,
+      });
+
+      setAllMessages(res.data.allMessages);
+      setUnreadMessages(res.data.unreadMessages);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -93,26 +109,38 @@ const Messages = () => {
         <Skeleton />
       ) : (
         allMessages.map((message) => (
-          <div
-            key={message.id}
-            onClick={() => handleClickOpen(message.id)}
-            style={{ cursor: "pointer" }}
-            className="message-list"
-          >
+          <>
             <Card variant="outlined">
               <Stack
                 direction="row"
                 alignItems="center"
                 gap={1}
                 style={{ fontWeight: message.read ? "" : "bold" }}
+                className="box"
               >
-                <StarBorderIcon color="action" />
-                <span>Message ID : {message.id}</span>
-                <span>Message : {message.message}</span>
+                <div
+                  key={message.id}
+                  onClick={() => handleClickOpen(message.id)}
+                  style={{ cursor: "pointer" }}
+                  className="message-list"
+                >
+                  <StarBorderIcon color="action" />
+                  <span>Message ID : {message.id}</span>
+                  <span>Message : {message.message}</span>
+                </div>
+                <div className="delete-icon">
+                  <IconButton
+                    onClick={() =>
+                      handleMessageDelete(message.id, message.actorId)
+                    }
+                  >
+                    <DeleteIcon color="success" />
+                  </IconButton>
+                </div>
               </Stack>
               <br />
             </Card>
-          </div>
+          </>
         ))
       )}
       <Link to="/">
