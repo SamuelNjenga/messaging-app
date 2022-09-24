@@ -20,6 +20,7 @@ import { useMessages } from "../../context/MessageContext";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Messages.scss";
+import { Typography } from "@mui/material";
 
 const Messages = () => {
   const [open, setOpen] = useState(false);
@@ -84,7 +85,7 @@ const Messages = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {message.message} {message.id}
+            {message.message}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -124,9 +125,10 @@ const Messages = () => {
                   style={{ cursor: "pointer" }}
                   className="message-list"
                 >
-                  <StarBorderIcon color="action" />
-                  <span>Message ID : {message.id}</span>
-                  <span>Message : {message.message}</span>
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <StarBorderIcon color="action" />
+                    <span>Message : {message.message}</span>
+                  </Stack>
                 </div>
                 <div className="delete-icon">
                   <IconButton
