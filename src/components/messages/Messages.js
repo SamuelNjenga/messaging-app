@@ -85,7 +85,9 @@ const Messages = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {message.message}
+            <Typography className="message-content">
+              {message.message}
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
