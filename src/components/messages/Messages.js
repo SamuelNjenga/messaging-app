@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
 import toast, { Toaster } from "react-hot-toast";
-
 import { convertToRead, deleteMessage } from "../../services/APIUtils";
 import { useMessages } from "../../context/MessageContext";
 
@@ -115,7 +114,7 @@ const Messages = () => {
         <Skeleton />
       ) : (
         allMessages.map((message) => (
-          <>
+          <React.Fragment key={message.id}>
             <Card variant="outlined">
               <Stack
                 direction="row"
@@ -147,7 +146,7 @@ const Messages = () => {
               </Stack>
               <br />
             </Card>
-          </>
+          </React.Fragment>
         ))
       )}
       <Link to="/">
