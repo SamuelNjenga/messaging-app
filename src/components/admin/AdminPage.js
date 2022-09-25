@@ -18,10 +18,10 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 import toast, { Toaster } from "react-hot-toast";
 
-// import ColoredLinearProgress from "../elements/ColoredLinearProgress";
+import { createMessage } from "../../services/APIUtils";
+import { useMessages } from "../../context/MessageContext";
 
 import "./AdminPage.scss";
-import { createMessage } from "../../services/APIUtils";
 
 const CreateMessageSchema = Yup.object().shape({
   message: Yup.string().required("Enter the message"),
@@ -33,6 +33,7 @@ const notify = () => toast.success("Message successfully created");
 const AdminPage = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
+  const { setAllMessages, setUnreadMessages } = useMessages();
 
   const handleClose = () => {
     setOpen(false);
@@ -40,7 +41,7 @@ const AdminPage = () => {
 
   const handleOpen = () => {
     setOpen(true);
-  }
+  };
 
   return (
     <div>
@@ -60,11 +61,14 @@ const AdminPage = () => {
                 setError(false);
                 setSubmitting(true);
                 try {
-                  const resp = await createMessage(values);
-                  if (resp.status === 201) {
+                  const res = await createMessage(values);
+                  if (res.status === 201) {
                     notify();
                   }
+                  setAllMessages(res.data.allMessages);
+                  setUnreadMessages(res.data.unreadMessages);
                   setSubmitting(false);
+                  setOpen(false);
                 } catch (err) {
                   setError(true);
                   setSubmitting(false);
