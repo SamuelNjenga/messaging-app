@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
+import toast, { Toaster } from "react-hot-toast";
 
 import { convertToRead, deleteMessage } from "../../services/APIUtils";
 import { useMessages } from "../../context/MessageContext";
@@ -21,6 +22,8 @@ import { useMessages } from "../../context/MessageContext";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Messages.scss";
 import { Typography } from "@mui/material";
+
+const notify = () => toast.success("Message successfully deleted");
 
 const Messages = () => {
   const [open, setOpen] = useState(false);
@@ -61,7 +64,7 @@ const Messages = () => {
         messageId: msgId,
         actorId: actorId,
       });
-
+      notify();
       setAllMessages(res.data.allMessages);
       setUnreadMessages(res.data.unreadMessages);
     } catch (err) {
@@ -152,6 +155,7 @@ const Messages = () => {
           BACK
         </Button>
       </Link>
+      <Toaster />
     </div>
   );
 };
