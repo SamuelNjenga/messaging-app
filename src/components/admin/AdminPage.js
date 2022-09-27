@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import { Alert, Stack } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Alert, Stack } from "@mui/material";
-import { Link } from "react-router-dom";
-import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
+import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
+import * as Yup from "yup";
 
-import { createMessage } from "../../services/APIUtils";
 import { useMessages } from "../../context/MessageContext";
+import { createMessage, getAllActors } from "../../services/APIUtils";
 
 import "./AdminPage.scss";
 
@@ -33,7 +33,20 @@ const notify = () => toast.success("Message successfully created");
 const AdminPage = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [actors, setActors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { setAllMessages, setUnreadMessages } = useMessages();
+
+  const fetchActors = async () => {
+    const res = await getAllActors();
+    const data = res.data;
+    setActors(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchActors();
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -91,14 +104,17 @@ const AdminPage = () => {
                   />
                 </Box>
                 <Box margin={2}>
-                  <Field
-                    component={TextField}
-                    type="number"
-                    label="actorId"
-                    name="actorId"
-                    margin="dense"
-                    variant="outlined"
-                  />
+                  {loading ? (
+                    "LOADING"
+                  ) : (
+                    <Field as="select" name="actorId">
+                      {actors?.map((actor) => (
+                        <option name="actorId" value={actor.id}>
+                          {actor.id}
+                        </option>
+                      ))}
+                    </Field>
+                  )}
                 </Box>
                 {error && (
                   <div className="error-div">

@@ -10,6 +10,10 @@ export const getAllMessages = async () => {
   return axios.get(`${API_BASE_URL}/v1/messages/${8}/message-all`);
 };
 
+export const getAllActors = async () => {
+  return axios.get(`${API_BASE_URL}/v1/actors/all-actors`);
+};
+
 export const convertToRead = async (values) => {
   return axios.post(`${API_BASE_URL}/v1/messages/message-read`, values);
 };
